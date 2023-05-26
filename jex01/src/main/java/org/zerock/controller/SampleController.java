@@ -131,32 +131,32 @@ public class SampleController {
 	}
 	
 	@GetMapping("/ex07")
-	public ResponseEntity<String> ex07() {
-		log.info("/ex07..........");
-
-		// {"name": "홍길동"}
-		String msg = "{\"name\": \"파이리\"}";
-
+	public ResponseEntity<String> ex07(){
+		log.info("/ex07..............");
+		
+		// {"name" : 파이리}
+		String msg = "{\"name\" : \"파이리\"}";
+		
 		HttpHeaders header = new HttpHeaders();
-		header.add("Content-Type", "application/json;charset=UTF-8");
-
+		header.add("Content-Type", "application/josn;charset-UTP-8");
+		
 		return new ResponseEntity<>(msg, header, HttpStatus.OK);
+		
+		
 	}
 	
-
 	@GetMapping("/exUpload")
 	public void exUpload() {
-		log.info("/exUpload..........");
+		log.info("/exUpload......");
 	}
-
+	
 	@PostMapping("/exUploadPost")
 	public void exUploadPost(ArrayList<MultipartFile> files) {
-
+		
 		files.forEach(file -> {
-			log.info("----------------------------------");
+			log.info("--------------------------------");
 			log.info("name:" + file.getOriginalFilename());
-			log.info("size:" + file.getSize());
-
+			log.info("size : " + file.getSize());
 		});
 	}
 }
