@@ -32,27 +32,53 @@ public class BoardControllerTests {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx).build();
 	}
 	
-	@Test
-	public void testList() throws Exception{
-		
-		log.info(
-				mockMvc.perform(MockMvcRequestBuilders.get("/board/list"))
-				.andReturn()
-				.getModelAndView()
-				.getModelMap()
-				);
-	}
+//	@Test
+//	public void testList() throws Exception{
+//		
+//		log.info(
+//				mockMvc.perform(MockMvcRequestBuilders.get("/board/list"))
+//				.andReturn()
+//				.getModelAndView()
+//				.getModelMap()	// Model 객체를 전달하고 있다면, getViewName() 대신 getModelMap()을 사용할 수 있다.
+//				);
+//	}
 	
 	
+//	@Test
+//	public void testRegister()throws Exception{
+//		
+//		String resultPage = mockMvc.perform(MockMvcRequestBuilders.post("/board/register")
+//				.param("title", "테스트 새 글 제목")
+//				.param("content", "테스트 새 글 내용")
+//				.param("writer", "user00")
+//				).andReturn().getModelAndView().getViewName();
+//		
+//		
+//		log.info(resultPage);
+//	}
+//	
+	
+//	@Test
+//	public void testGet() throws Exception{
+//		
+//		log.info("testGet...........................................................");
+//		log.info(mockMvc.perform(MockMvcRequestBuilders
+//				.get("/board/get")
+//				.param("bno", "1"))		// 특정 게시물을 조회[할 떄 반드시 bno라는 파라미터가 필요하므로 param()을 통해서 추가하고 실행함.
+//				.andReturn()
+//				.getModelAndView().getModelMap());
+//	}
+	
 	@Test
-	public void testRegister()throws Exception{
+	public void testModify() throws Exception{
 		
-		String resultPage = mockMvc.perform(MockMvcRequestBuilders.post("/board/register")
-				.param("title", "테스트 새 글 제목")
-				.param("content", "테스트 새 글 내용")
-				.param("writer", "user00")
-				).andReturn().getModelAndView().getViewName();
-		
+		String resultPage = mockMvc
+				.perform(MockMvcRequestBuilders.post("/board/modify")
+						.param("bno", "1")
+						.param("title", "수정된 테스트 새 글 제목")
+						.param("content", "수정된 테스트 새 글 내용")
+						.param("writer", "user00"))
+				.andReturn().getModelAndView().getViewName();
 		
 		log.info(resultPage);
 	}
