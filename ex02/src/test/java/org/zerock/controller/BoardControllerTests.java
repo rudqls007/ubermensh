@@ -32,16 +32,16 @@ public class BoardControllerTests {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx).build();
 	}
 	
-//	@Test
-//	public void testList() throws Exception{
-//		
-//		log.info(
-//				mockMvc.perform(MockMvcRequestBuilders.get("/board/list"))
-//				.andReturn()
-//				.getModelAndView()
-//				.getModelMap()	// Model 객체를 전달하고 있다면, getViewName() 대신 getModelMap()을 사용할 수 있다.
-//				);
-//	}
+	@Test
+	public void testList() throws Exception{
+		
+		log.info(
+				mockMvc.perform(MockMvcRequestBuilders.get("/board/list"))
+				.andReturn()
+				.getModelAndView()
+				.getModelMap()	// Model 객체를 전달하고 있다면, getViewName() 대신 getModelMap()을 사용할 수 있다.
+				);
+	}
 	
 	
 //	@Test
@@ -84,14 +84,14 @@ public class BoardControllerTests {
 //		log.info(resultPage);
 //	}
 	
-	@Test
-	public void testRemove() throws Exception{
-		// 삭제 전 데이터베이스에 게시물 번호 확인할 것.
-		
-		String resultPage = mockMvc.perform(MockMvcRequestBuilders.post("/board/remove")
-				.param("bno","25"))
-				.andReturn().getModelAndView().getViewName();
-		
-		log.info(resultPage);
-	}
+//	@Test
+//	public void testRemove() throws Exception{
+//		// 삭제 전 데이터베이스에 게시물 번호 확인할 것.
+//		
+//		String resultPage = mockMvc.perform(MockMvcRequestBuilders.post("/board/remove")
+//				.param("bno","25"))
+//				.andReturn().getModelAndView().getViewName();
+//		
+//		log.info(resultPage);
+//	}
 }
