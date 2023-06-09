@@ -40,12 +40,13 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 	
-	@GetMapping("/get")
+	// get, post는 배열로 처리할 수 있고, 하나의 메서드로 여러 URL을 처리할 수 있따.
+	@GetMapping({"/get", "/modify"})
 	// @RequestParam = HttpServletRequest의 request.getParameter의 기능과 동일하다.
 	// jsp에서 보낸 request값을 효율적으로 받기 위해 사용험.
 	public void get(@RequestParam("bno") Long bno, Model model) {
 		
-		log.info("/get");
+		log.info("/get or modify");
 		// 뷰로 해당 번호의 게시물을 전달해야하므로 Model을 파라미터로 지정함.
 		model.addAttribute("board", service.get(bno));
 	}
