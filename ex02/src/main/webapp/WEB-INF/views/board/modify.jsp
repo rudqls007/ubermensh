@@ -21,6 +21,10 @@
 			<!-- /.panel-heading -->
 			<div class="panel-body">
 				<form role="form" action="/board/modify" method="post">
+					<!-- 페이징 처리를 위해 페이지 안에 지금 페이지가 위치한 페이지넘버와 한 페이지당 출력될 갯수를 저장하여 list로 돌아갈 때 페이지가 저장되어 있는
+						 페이지 번호로 되돌아갈 수 있게끔 변수들을 저장함.  -->
+					<input type='hidden' name='pageNum' value='<c:out value="${cri.pageNum }"/>'>
+					<input type='hidden' name='amount' value='<c:out value="${cri.amount }"/>'>
 					<div class="form-group">
 						<label>Bno</label> <input class="form-control" name='bno'
 							value='<c:out value="${board.bno}" />' readonly="readonly">
@@ -83,8 +87,14 @@
 				formObj.attr("action", "/board/remove");
 			}else if(operation === 'list'){
 				//move to list
-				self.location= "/board/list";
-				return;
+				formObj.attr("action","/board/list").attr("method","get");
+				
+				var pageNumTag = $("input[name='pageNum']").clone();
+				var amountTag = $("input[name='amount']").clone();
+				
+				formObj.empty();
+				formObj.append(pageNumTag);
+				formObj.append(amountTag);
 			}
 			// form 태그의 모든 버튼은 기본적으로 submit으로 처리하기 떄문에 e.preventDefault()로 기본 동작을 막고 마지막에 직접 submit()을 수행함.
 			formObj.submit();

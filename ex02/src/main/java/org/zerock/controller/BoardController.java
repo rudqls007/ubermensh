@@ -3,11 +3,14 @@ package org.zerock.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.Criteria;
+import org.zerock.domain.PageDTO;
 import org.zerock.service.BoardService;
 
 import lombok.AllArgsConstructor;
@@ -20,12 +23,12 @@ import lombok.extern.log4j.Log4j;
 public class BoardController {
 
 	private BoardService service;
-	
-	@GetMapping("/list")
-	public void list(Model model) {
-		log.info("list");
-		model.addAttribute("list", service.getList());
-	}
+//	
+//	@GetMapping("/list")
+//	public void list(Model model) {
+//		log.info("list");
+//		model.addAttribute("list", service.getList());
+//	}
 	
 	@PostMapping("/register")
 	public String register(BoardVO board, RedirectAttributes rttr) {
@@ -44,7 +47,8 @@ public class BoardController {
 	@GetMapping({"/get", "/modify"})
 	// @RequestParam = HttpServletRequest의 request.getParameter의 기능과 동일하다.
 	// jsp에서 보낸 request값을 효율적으로 받기 위해 사용험.
-	public void get(@RequestParam("bno") Long bno, Model model) {
+	// @ModelAttriBute 명시적으로 이름을 지정하기 위해 cri 변수 값을 부여함.
+	public void get(@RequestParam("bno") Long bno, Model model, @ModelAttribute("cri") Criteria cri) {
 		
 		log.info("/get or modify");
 		// 뷰로 해당 번호의 게시물을 전달해야하므로 Model을 파라미터로 지정함.
@@ -53,24 +57,31 @@ public class BoardController {
 	
 	
 	@PostMapping("/modify")
-	public String modify(BoardVO board, RedirectAttributes rttr) {
+	public String modify(BoardVO board,@ModelAttribute("cri") Criteria cri , RedirectAttributes rttr) {
 		log.info("modify : " + board);
 		
 		// service.modify()는 수정 여부를 boolean으로 처리하므로 이를 이용해서 성공한 경우에만 RedirectAttributes에 추가함.
 		if(service.modify(board)) {
 			rttr.addFlashAttribute("result" + "success");
 		}
+		
+		rttr.addAttribute("pageNum", cri.getPageNum());
+		rttr.addAttribute("amount", cri.getAmount());
+		
 		return "redirect:/board/list";
 	}
 	
 	@PostMapping("/remove")
-	public String remove(@RequestParam("bno") Long bno, RedirectAttributes rttr) {
+	public String remove(@RequestParam("bno") Long bno,@ModelAttribute("cri") Criteria cri ,RedirectAttributes rttr) {
 		
 		log.info("remove : " + bno);
 		if(service.remove(bno)) {
 			
 			rttr.addFlashAttribute("result", "success");
 		}
+		
+		rttr.addAttribute("pageNum", cri.getPageNum());
+		rttr.addAttribute("amount", cri.getAmount());
 		// 삭제 후 이동이 필요하므 redirect를 이용해서 삭제 처리 후에 목록 페이지로 이동함.
 		return "redirect:/board/list";
 	}
@@ -78,5 +89,14 @@ public class BoardController {
 	@GetMapping("/register")
 	public void register() {
 		
+	}
+	
+	@GetMapping("/list")
+	public void list(Criteria cri, Model model) {
+		
+		log.info("list" + cri);
+
+		model.addAttribute("list", service.getList(cri));
+		model.addAttribute("pageMaker", new PageDTO(cri, 123));
 	}
 }

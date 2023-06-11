@@ -32,17 +32,17 @@ public class BoardControllerTests {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx).build();
 	}
 	
-	@Test
-	public void testList() throws Exception{
-		
-		log.info(
-				mockMvc.perform(MockMvcRequestBuilders.get("/board/list"))
-				.andReturn()
-				.getModelAndView()
-				.getModelMap()	// Model 객체를 전달하고 있다면, getViewName() 대신 getModelMap()을 사용할 수 있다.
-				);
-	}
-	
+//	@Test
+//	public void testList() throws Exception{
+//		
+//		log.info(
+//				mockMvc.perform(MockMvcRequestBuilders.get("/board/list"))
+//				.andReturn()
+//				.getModelAndView()
+//				.getModelMap()	// Model 객체를 전달하고 있다면, getViewName() 대신 getModelMap()을 사용할 수 있다.
+//				);
+//	}
+//	
 	
 //	@Test
 //	public void testRegister()throws Exception{
@@ -94,4 +94,14 @@ public class BoardControllerTests {
 //		
 //		log.info(resultPage);
 //	}
+	
+	
+	@Test
+	public void testListPaging() throws Exception{
+		
+		log.info(mockMvc.perform(MockMvcRequestBuilders.get("/board/list")
+				.param("pageNum", "2")
+				.param("amount", "50"))
+				.andReturn().getModelAndView().getModelMap());
+	}
 }

@@ -40,10 +40,17 @@
 					<label>Writer</label> <input class="form-control" name='writer'
 						value='<c:out value="${board.writer }"/>' readonly="readonly">
 				</div>
-				<button data-oper='modify' class="btn btn-default"
-					onclick="location.href='/board/modify?bno=<c:out value="${board.bno}"/>'">Modify</button>
-				<button data-oper='list' class="btn btn-info"
-					onclick="location.href='/board/list'">List</button>
+				<button data-oper='modify' class="btn btn-default">Modify</button>
+				<button data-oper='list' class="btn btn-info">List</button>
+
+				<form id='operForm' action="/board/modify" method="get">
+					<input type='hidden' id='bno' name='bno'
+						value='<c:out value="${board.bno}"/>'>
+					<!-- 페이징 처리를 위해 페이지 안에 지금 페이지가 위치한 페이지넘버와 한 페이지당 출력될 갯수를 저장하여 list로 돌아갈 때 페이지가 저장되어 있는
+						 페이지 번호로 되돌아갈 수 있게끔 변수들을 저장함.  -->
+					<input type='hidden' name='pageNum' value='<c:out value="${cri.pageNum }"/>'>
+					<input type='hidden' name='amount' value='<c:out value="${cri.amount }"/>'>
+				</form>
 
 			</div>
 			<!--  end panel-body -->
@@ -54,4 +61,23 @@
 	<!-- end panel -->
 </div>
 <!-- /.row -->
+<script type="text/javascript">
+	$(document).ready(function() {
+		var operForm = $("#operForm");
+
+		$("button[data-oper ='modify']").on("click", function(e) {
+
+			operForm.attr("action", "/board/modify").submit();
+		});
+
+		$("button[data-oper ='list']").on("click", function(e) {
+
+			operForm.find("#bno").remove();
+			operForm.attr("action", "/board/list")
+			operForm.submit();
+		});
+	});
+</script>
 <%@include file="../includes/footer.jsp"%>
+
+
