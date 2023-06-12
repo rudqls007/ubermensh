@@ -23,6 +23,8 @@ public interface BoardMapper {
 	public int delete(Long bno);
 	// update 수정 처리
 	public int update(BoardVO board);
+	// 전체 페이지 갯수 불러오기
+	public int getTotalCount(Criteria cri);
 	
 	
 }
